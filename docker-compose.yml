@@ -1,0 +1,37 @@
+version: '3.2'
+
+services:
+  php:
+    container_name: leads-php
+    build: ./docker/php/
+    image: leads-php
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./src:/var/www/html
+  
+  nginx:
+    container_name: leads-nginx
+    build: ./docker/nginx
+    image: leads-nginx
+    ports:
+      - 80:80
+
+  mysql:
+    container_name: leads-mysql
+    build: ./docker/mysql
+    image: leads-mysql
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - leads-database:/var/lib/mysql
+
+volumes:
+  leads-database:
