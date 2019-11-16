@@ -1,6 +1,14 @@
 version: '3.2'
 
 services:
+  nginx:
+    build: ./docker/nginx
+    image: project-nginx
+    ports:
+      - 80:80
+    depends_on:
+      - php
+
   php:
     build: ./docker/php/
     image: project-php
@@ -10,8 +18,6 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./src/app:/var/www/html
-    ports:
-      - 80:9000
     depends_on:
       - mysql
   
