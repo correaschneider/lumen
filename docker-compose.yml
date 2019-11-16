@@ -2,7 +2,6 @@ version: '3.2'
 
 services:
   php:
-    container_name: project-php
     build: ./docker/php/
     image: project-php
     environment:
@@ -10,17 +9,13 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
-      - ./src:/var/www/html
-  
-  nginx:
-    container_name: project-nginx
-    build: ./docker/nginx
-    image: project-nginx
+      - ./src/app:/var/www/html
     ports:
-      - 80:80
-
+      - 80:9000
+    depends_on:
+      - mysql
+  
   mysql:
-    container_name: project-mysql
     build: ./docker/mysql
     image: project-mysql
     ports:
